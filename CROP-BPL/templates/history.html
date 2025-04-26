@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crop Production Trends</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      background-color: #f0f4c3;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #33691e;
+      margin-bottom: 40px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+      background-color: white;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    th, td {
+      padding: 12px;
+      border: 1px solid #cfd8dc;
+      text-align: center;
+    }
+    th {
+      background-color: #dcedc8;
+      color: #33691e;
+    }
+    .button-container {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .button-container button {
+      margin: 10px;
+      padding: 10px 20px;
+      background-color: #7cb342;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .button-container button:hover {
+      background-color: #558b2f;
+    }
+    .chart-box {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      justify-content: center;
+    }
+    .chart-card {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: 45%;
+      min-width: 300px;
+    }
+    canvas {
+      width: 100% !important;
+      height: 300px !important;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Crop Production Over the Last 5 Years</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Crop</th>
+      <th>2020</th>
+      <th>2021</th>
+      <th>2022</th>
+      <th>2023</th>
+      <th>2024</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for crop, base in base_productions.items() %}
+    <tr>
+      <td>{{ crop|capitalize }}</td>
+      <td>{{ base }}</td>
+      <td>{{ base + 100 }}</td>
+      <td>{{ base + 200 }}</td>
+      <td>{{ base + 300 }}</td>
+      <td>{{ base + 400 }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<div class="button-container">
+  {% for crop in base_productions.keys()|list[:5] %}
+    <button onclick="drawChart('{{ crop }}')">{{ crop|capitalize }}</button>
+  {% endfor %}
+</div>
+
+<div class="chart-box">
+  <div class="chart-card">
+    <canvas id="mainChart"></canvas>
+  </div>
+</div>
+
+<script>
+  const cropData = {
+    "rice": [2700, 2800, 2900, 3000, 3100],
+    "maize": [3000, 3100, 3200, 3300, 3400],
+    "jute": [2300, 2400, 2500, 2600, 2700],
+    "cotton": [1500, 1600, 1700, 1800, 1900],
+    "mango": [8390, 9360, 9500, 9754, 9981],
+    "coconut": [7000, 7100, 7200, 7300, 7400],
+    "papaya": [40000, 40100, 40200, 40300, 40400],
+    "orange": [12000, 12100, 12200, 12300, 12400],
+    "apple": [10000, 10100, 10200, 10300, 10400],
+    "muskmelon": [15000, 15100, 15200, 15300, 15400],
+    "watermelon": [20000, 20100, 20200, 20300, 20400],
+    "grapes": [18000, 18100, 18200, 18300, 18400],
+    "banana": [30000, 30100, 30200, 30300, 30400],
+    "pomegranate": [12000, 12100, 12200, 12300, 12400],
+    "lentil": [900, 1000, 1100, 1200, 1300],
+    "blackgram": [700, 800, 900, 1000, 1100],
+    "mungbeans": [800, 900, 1000, 1100, 1200],
+    "mothbeans": [600, 700, 800, 900, 1000],
+    "pigeonpeas": [900, 1000, 1100, 1200, 1300],
+    "kidneybeans": [1000, 1100, 1200, 1300, 1400],
+    "chickpeas": [1000, 1100, 1200, 1300, 1400],
+    "coffee": [800, 900, 1000, 1100, 1200]
+  };
+
+  const labels = ['2020', '2021', '2022', '2023', '2024'];
+  let chartInstance;
+
+  function drawChart(crop) {
+    const ctx = document.getElementById('mainChart').getContext('2d');
+    if (chartInstance) chartInstance.destroy();
+    chartInstance = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: `${crop.charAt(0).toUpperCase() + crop.slice(1)} Production`,
+          data: cropData[crop],
+          backgroundColor: ['#aed581', '#81c784', '#4db6ac', '#4fc3f7', '#7986cb'],
+          borderRadius: 8
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+          title: {
+            display: true,
+            text: crop.charAt(0).toUpperCase() + crop.slice(1) + ' Production (2020–2024)'
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  }
+
+  drawChart('rice');
+</script>
+
+</body>
+</html>
