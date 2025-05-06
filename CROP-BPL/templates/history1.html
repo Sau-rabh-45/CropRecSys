@@ -15,22 +15,13 @@
       text-align: center;
       color: #33691e;
       margin-bottom: 40px;
-      font-size: 36px; /* Adjust the size as needed */
-      font-weight: bold;
     }
-
     table {
-      width: 80%;
-      margin: 0 auto 30px auto;
+      width: 100%;
       border-collapse: collapse;
+      margin-bottom: 30px;
       background-color: white;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-    thead {
-      background-color: #4caf50; /* Darker shade of green */
-      color: white; /* White text color */
-      font-weight: bold; /* Bold text */
-      text-align: center; /* Center align text */
     }
     th, td {
       padding: 12px;
@@ -71,18 +62,6 @@
       max-width: 600px;
       min-width: 300px;
     }
-    .info-up {
-      color: #424242;
-      font-size: 1.2rem;
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    .info-down {
-      color: #424242;
-      font-size: 0.9rem;
-      text-align: center;
-      margin-bottom: 30px;
-    }
     canvas {
       width: 100% !important;
       height: 280px !important;
@@ -91,12 +70,8 @@
 </head>
 <body>
 
-<div class="h1">
-   <h1>Crop Production Over the Last 5 Years</h1>
-</div>
-<div class="info-up">
-  Statistics are based on data from Directorate of Economics and Statistics, Department of Agriculture and Farmers Welfare, Government of India.
-</div>
+ <h1>Crop Production Over the Last 5 Years</h1>
+
 <table>
   <thead>
     <tr>
@@ -109,6 +84,7 @@
     </tr>
   </thead>
   <tbody>
+    {% for crop, base in base_productions.items() %}
     <tr>
       <td>Rice</td>
       <td>4320</td>
@@ -255,7 +231,7 @@
 
     <tr>
       <td>Mungbeans</td>
-      <td>600*</td>
+      <td>600(estimate)</td>
       <td>564</td>
       <td>580</td>
       <td>601</td>
@@ -264,7 +240,7 @@
 
     <tr>
       <td>Mothbeans</td>
-      <td>350*</td>
+      <td>350(estimate)</td>
       <td>348</td>
       <td>344</td>
       <td>347</td>
@@ -273,7 +249,7 @@
 
     <tr>
       <td>Pigeonpeas</td>
-      <td>900*</td>
+      <td>900(estimate)</td>
       <td>892</td>
       <td>897</td>
       <td>894</td>
@@ -282,7 +258,7 @@
 
     <tr>
       <td>Kidneybeans</td>
-      <td>1200*</td>
+      <td>1200(estimate)</td>
       <td>1147</td>
       <td>1103</td>
       <td>1061</td>
@@ -291,7 +267,7 @@
 
     <tr>
       <td>Chickpea</td>
-      <td>1180*</td>
+      <td>1180(estimate)</td>
       <td>1163</td>
       <td>1147</td>
       <td>1103</td>
@@ -300,19 +276,16 @@
 
     <tr>
       <td>Coffee</td>
-      <td>1183*</td>
+      <td>1183(estimate)</td>
       <td>1162</td>
       <td>1139</td>
       <td>1111</td>
       <td>1103</td>
     </tr>
+    {% endfor %}
   </tbody>
 </table>
- <div class="container">
-    <p class="info-down">
-      * These are estimated values, due to the time of publishing data of these crops are not available.
-    </p>
- </div>
+
   <div class="button-container">
     <button onclick="showGraph('rice')">Rice</button>
     <button onclick="showGraph('maize')">Maize</button>
@@ -323,7 +296,7 @@
     <button onclick="showGraph('papaya')">Papaya</button>
     <button onclick="showGraph('orange')">Orange</button>
     <button onclick="showGraph('apple')">Apple</button>
-    <button onclick="showGraph('muskmelon')">Muskmelon</button>
+    <button onclick="showGraph('muskmelom')">Muskmelon</button>
     <button onclick="showGraph('watermelon')">Watermelon</button>
     <button onclick="showGraph('grapes')">Grapes</button>
     <button onclick="showGraph('banana')">Banana</button>
@@ -357,7 +330,7 @@
       orange:[10200, 10100, 10000, 9900, 9800],
       apple:[7600, 7500, 7400, 7300, 7200],
       muskmelon:[18000, 17500, 17000, 16500, 16000],
-      watermelon:[38000, 37500, 37000, 36500, 36000],
+      watermelon:[38000, 37500, 36500, 3600],
       grapes:[27000, 26500, 26000, 25500, 25000],
       banana:[34000, 33000, 32000, 31000, 30000],
       pomegranate:[12000, 11500, 11000, 10500, 10000],
@@ -369,31 +342,13 @@
       kidneybeans:[1200, 1150, 1100, 1050, 1000],
       chickpeas:[1180, 1163, 1197, 1043, 1009],
       coffee:[1180, 1163, 1197, 1043, 1009],
+
     };
 
     const cropNames = {
       maize: "Maize",
       rice: "Rice",
       jute: "Jute",
-      cotton: "Cotton",
-      mango: "Mango",
-      coconut: "Coconut",
-      papaya:"Papaya",
-      orange:"Orange",
-      apple:"Apple",
-      muskmelon:"Muskmelon",
-      watermelon:"Watermelon",
-      grapes:"Grapes",
-      banana:"Banana",
-      pomegranate:"Pomegranate",
-      lentil:"Lentil",
-      blackgram:"Blackgram",
-      mungbeans:"Mungbeans",
-      mothbeans:"Mothbeans",
-      pigeonpeas:"Ppigeonpeas",
-      kidneybeans:"Kidneybeans",
-      chickpeas:"Chickpeas",
-      coffee:"Coffee",
     };
 
     const fixedColors = ['#4caf50', '#2e7d32', '#009688', '#0097a7', '#4db6ac'];
@@ -433,7 +388,7 @@
             }
           },
           animation: {
-            duration: 2500,
+            duration: 2000,
             easing: 'easeOutBounce'
           }
         }
